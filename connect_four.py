@@ -49,14 +49,6 @@ class PieceSprite(pygame.sprite.Sprite):
         self.rect.topleft = (self.x * TILE_SIZE, self.y * TILE_SIZE)
         self.screen.blit(self.image, self.rect)
 
-class YellowPieceSprite(PieceSprite):
-    def __init__(self, screen, x, y):
-        PieceSprite.__init__(self, YELLOW_PIECE_16_IMG, screen, x, y)
-
-class RedPieceSprite(PieceSprite):
-    def __init__(self, screen, x, y):
-        PieceSprite.__init__(self, RED_PIECE_16_IMG, screen, x, y)
-
 class DroppedPieceSprite(PieceSprite):
     def __init__(self, screen, x, y, color):
         if color == 1:
@@ -71,12 +63,6 @@ class SelectedPieceSprite(PieceSprite):
         elif color == 2:
             PieceSprite.__init__(self, YELLOW_PIECE_16_IMG, screen, x, y)
 
-    def update(self, x):
-        self.x = x
-        self.rect.topleft = (self.x * TILE_SIZE, 0)
-        self.screen.blit(self.image, self.rect)
-
-
 class RightArrowSprite(PieceSprite):
     def __init__(self, screen, x, y):
         PieceSprite.__init__(self, RIGHT_ARROW_16_IMG, screen, x, y)
@@ -88,6 +74,62 @@ class LeftArrowSprite(PieceSprite):
 class DownArrowSprite(PieceSprite):
     def __init__(self, screen, x, y):
         PieceSprite.__init__(self, DOWN_ARROW_16_IMG, screen, x, y)
+
+# check player win
+def check_win(board):
+    for x in range(len(board)):
+        for y in range(len(board[x])):
+            if board[x][y] == 1:
+                if check_link(board, x, y, 1, None) == 4:
+                    main_loop()
+            elif board[x][y] == 2:
+                if check_link(board, x, y, 2, None) == 4:
+                    main_loop()
+
+# find length of connections
+def check_link(board, x, y, player, direction):
+    if direction == None:
+        if x + 1 < 7 and board[x + 1][y] == player:
+            return 1 + check_link(board, x + 1, y, player, 'horizontal_right')
+        elif x - 1 >= 0 and board[x - 1][y] == player:
+            return 1 + check_link(board, x - 1, y, player, 'horizontal_left')
+        elif y + 1 < 6 and board[x][y + 1] == player:
+            return 1 + check_link(board, x, y + 1, player, 'vertical_down')
+        elif y - 1 >= 0 and board[x][y - 1] == player:
+            return 1 + check_link(board, x, y - 1, player, 'vertical_up')
+        elif x + 1 < 7 and y + 1 < 6 and board[x + 1][y + 1] == player:
+            return 1 + check_link(board, x + 1, y + 1, player, 'diagonal_right_down')
+        elif x - 1 >= 0 and y - 1 >= 0 and board[x - 1][y - 1] == player:
+            return 1 + check_link(board, x - 1, y - 1, player, 'diagonal_left_up')
+        elif x + 1 < 7 and y - 1 >= 0 and board[x + 1][y - 1] == player:
+            return 1 + check_link(board, x + 1, y - 1, player, 'diagonal_right_up')
+        elif x - 1 >= 0 and y + 1 < 6 and board[x - 1][y + 1] == player:
+            return 1 + check_link(board, x - 1, y + 1, player, 'diagonal_left_down')
+    elif direction == 'vertical_down':
+        if y + 1 < 6 and board[x][y + 1] == player:
+            return 1 + check_link(board, x, y + 1, player, 'vertical_down')
+    elif direction == 'vertical_up':
+        if y - 1 >= 0 and board[x][y - 1] == player:
+            return 1 + check_link(board, x, y - 1, player, 'vertical_up')
+    elif direction == 'horizontal_right':
+        if x + 1 < 7 and board[x + 1][y] == player:
+            return 1 + check_link(board, x + 1, y, player, 'horizontal_right')
+    elif direction == 'horizontal_left':
+        if x - 1 >= 0 and board[x - 1][y] == player:
+            return 1 + check_link(board, x - 1, y, player, 'horizontal_left')
+    elif direction == 'diagonal_right_down':
+        if x + 1 < 7 and y + 1 < 6 and board[x + 1][y + 1] == player:
+            return 1 + check_link(board, x + 1, y + 1, player, 'diagonal_right_down')
+    elif direction == 'diagonal_left_up':
+        if x - 1 >= 0 and y - 1 >= 0 and board[x - 1][y - 1] == player:
+            return 1 + check_link(board, x - 1, y - 1, player, 'diagonal_left_up')
+    elif direction == 'diagonal_right_up':
+        if x + 1 < 7 and y - 1 >= 0 and board[x + 1][y - 1] == player:
+            return 1 + check_link(board, x + 1, y - 1, player, 'diagonal_right_up')
+    elif direction == 'diagonal_left_down':
+        if x - 1 >= 0 and y + 1 < 6 and board[x - 1][y + 1] == player:
+            return 1 + check_link(board, x - 1, y + 1, player, 'diagonal_left_down')
+    return 1
 
 def main_loop():
     # initialize pygame and variables
@@ -105,9 +147,7 @@ def main_loop():
              [0,0,0,0,0,0], \
              [0,0,0,0,0,0]]
 
-    # sprite groups
-    # red_pieces = []
-    # yellow_pieces = []
+    # initialize variables and sprite lists
     pieces = []
     arrows = []
     turn = 1
@@ -131,7 +171,12 @@ def main_loop():
                 elif event.key == K_r:
                     main_loop();
                 elif event.key == K_RETURN:
-                    print [board[i] for i in range(6)]
+                    printBoard = ''
+                    for i in range(6):
+                        for j in range(7):
+                            printBoard += str(board[j][i]) + ','
+                        printBoard += '\n'
+                    print printBoard
                 elif event.key == K_DOWN:
                     if board[sel_col][0] == 0:
                         filled = -1
@@ -157,15 +202,19 @@ def main_loop():
         arrows[0].x = sel_col + 1
         arrows[1].x = sel_col - 1
         arrows[2].x = sel_col
+        sel_piece.x = sel_col
 
         for piece in pieces:
             piece.update()
         for arrow in arrows:
             arrow.update()
-        sel_piece.update(sel_col)
+        sel_piece.update()
 
         # refresh screen
         pygame.display.flip()
+
+        # check game end
+        check_win(board)
 
 def main():
     main_loop()
