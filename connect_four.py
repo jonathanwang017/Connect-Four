@@ -19,6 +19,9 @@ YELLOW_PIECE_32_IMG = 'yellow_piece_32.gif'
 RIGHT_ARROW_16_IMG = 'right_arrow_16.gif'
 LEFT_ARROW_16_IMG = 'left_arrow_16.gif'
 DOWN_ARROW_16_IMG = 'down_arrow_16.gif'
+BOARD_16_IMG = 'board_16.gif'
+WIN_RED_IMG = 'win_red.gif'
+WIN_YELLOW_IMG = 'win_yellow.gif'
 BACKGROUND_COLOR = (120, 170, 240)
 
 # function to load image
@@ -75,16 +78,27 @@ class DownArrowSprite(PieceSprite):
     def __init__(self, screen, x, y):
         PieceSprite.__init__(self, DOWN_ARROW_16_IMG, screen, x, y)
 
+class BoardSprite(PieceSprite):
+    def __init__(self, screen):
+        PieceSprite.__init__(self, BOARD_16_IMG, screen, 0, 2)
+
+class WinScreenSprite(PieceSprite):
+    def __init__(self, screen, player):
+        if player == 1:
+            PieceSprite.__init__(self, WIN_RED_IMG, screen, 0, 0)
+        elif player == 2:
+            PieceSprite.__init__(self, WIN_YELLOW_IMG, screen, 0, 0)
+
 # check player win
 def check_win(board):
     for x in range(len(board)):
         for y in range(len(board[x])):
             if board[x][y] == 1:
                 if check_link(board, x, y, 1, None) == 4:
-                    main_loop()
+                    win_screen(1)
             elif board[x][y] == 2:
                 if check_link(board, x, y, 2, None) == 4:
-                    main_loop()
+                    win_screen(2)
 
 # find length of connections
 def check_link(board, x, y, player, direction):
@@ -157,6 +171,7 @@ def main_loop():
     arrows.append(LeftArrowSprite(screen, sel_col - 1, 0))
     arrows.append(DownArrowSprite(screen, sel_col, 1))
     sel_piece = SelectedPieceSprite(screen, sel_col, 0, turn)
+    board_bg = BoardSprite(screen)
 
     # game loop
     while True:
@@ -169,7 +184,7 @@ def main_loop():
                 if event.key == K_ESCAPE:
                     sys.exit()
                 elif event.key == K_r:
-                    main_loop();
+                    main_loop()
                 elif event.key == K_RETURN:
                     printBoard = ''
                     for i in range(6):
@@ -204,6 +219,7 @@ def main_loop():
         arrows[2].x = sel_col
         sel_piece.x = sel_col
 
+        board_bg.update()
         for piece in pieces:
             piece.update()
         for arrow in arrows:
@@ -215,6 +231,30 @@ def main_loop():
 
         # check game end
         check_win(board)
+
+def win_screen(player):
+    # initialize pygame and variables
+    pygame.init()
+    screen = pygame.display.set_mode((SCREEN_X, SCREEN_Y))
+    pygame.display.set_caption('Connect Four')
+    pygame.mouse.set_visible(0)
+
+    winScreen = WinScreenSprite(screen, player)
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                sys.exit()
+            elif event.type == KEYDOWN:
+                if event.key == K_ESCAPE:
+                    sys.exit()
+                elif event.key == K_r:
+                    main_loop()
+                elif event.key == K_RETURN:
+                    main_loop()
+
+        winScreen.update()
+        pygame.display.flip()
 
 def main():
     main_loop()
