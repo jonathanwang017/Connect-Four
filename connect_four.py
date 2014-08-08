@@ -7,21 +7,31 @@ main_dir = os.path.split(os.path.abspath(__file__))[0]
 data_dir = os.path.join(main_dir, 'data')
 
 # screen constants
-SCREEN_X = 112
-SCREEN_Y = 128
-TILE_SIZE = 16
+# SCREEN_X = 112
+# SCREEN_Y = 128
+# TILE_SIZE = 16
+SCREEN_X = 224
+SCREEN_Y = 256
+TILE_SIZE = 32
 
 # image constants
-RED_PIECE_16_IMG = 'red_piece_16.gif'
-YELLOW_PIECE_16_IMG = 'yellow_piece_16.gif'
-RED_PIECE_32_IMG = 'red_piece_32.gif'
-YELLOW_PIECE_32_IMG = 'yellow_piece_32.gif'
-RIGHT_ARROW_16_IMG = 'right_arrow_16.gif'
-LEFT_ARROW_16_IMG = 'left_arrow_16.gif'
-DOWN_ARROW_16_IMG = 'down_arrow_16.gif'
-BOARD_16_IMG = 'board_16.gif'
-WIN_RED_IMG = 'win_red.gif'
-WIN_YELLOW_IMG = 'win_yellow.gif'
+# RED_PIECE_IMG = 'red_piece_16.gif'
+# YELLOW_PIECE_IMG = 'yellow_piece_16.gif'
+# RIGHT_ARROW_IMG = 'right_arrow_16.gif'
+# LEFT_ARROW_IMG = 'left_arrow_16.gif'
+# DOWN_ARROW_IMG = 'down_arrow_16.gif'
+# BOARD_IMG = 'board_16.gif'
+# WIN_RED_IMG = 'win_red_16.gif'
+# WIN_YELLOW_IMG = 'win_yellow_16.gif'
+RED_PIECE_IMG = 'red_piece_32.gif'
+YELLOW_PIECE_IMG = 'yellow_piece_32.gif'
+RIGHT_ARROW_IMG = 'right_arrow_32.gif'
+LEFT_ARROW_IMG = 'left_arrow_32.gif'
+DOWN_ARROW_IMG = 'down_arrow_32.gif'
+BOARD_IMG = 'board_32.gif'
+WIN_RED_IMG = 'win_red_32.gif'
+WIN_YELLOW_IMG = 'win_yellow_32.gif'
+
 BACKGROUND_COLOR = (120, 170, 240)
 
 # function to load image
@@ -55,32 +65,32 @@ class PieceSprite(pygame.sprite.Sprite):
 class DroppedPieceSprite(PieceSprite):
     def __init__(self, screen, x, y, color):
         if color == 1:
-            PieceSprite.__init__(self, RED_PIECE_16_IMG, screen, x, y)
+            PieceSprite.__init__(self, RED_PIECE_IMG, screen, x, y)
         elif color == 2:
-            PieceSprite.__init__(self, YELLOW_PIECE_16_IMG, screen, x, y)
+            PieceSprite.__init__(self, YELLOW_PIECE_IMG, screen, x, y)
 
 class SelectedPieceSprite(PieceSprite):
     def __init__(self, screen, x, y, color):
         if color == 1:
-            PieceSprite.__init__(self, RED_PIECE_16_IMG, screen, x, y)
+            PieceSprite.__init__(self, RED_PIECE_IMG, screen, x, y)
         elif color == 2:
-            PieceSprite.__init__(self, YELLOW_PIECE_16_IMG, screen, x, y)
+            PieceSprite.__init__(self, YELLOW_PIECE_IMG, screen, x, y)
 
 class RightArrowSprite(PieceSprite):
     def __init__(self, screen, x, y):
-        PieceSprite.__init__(self, RIGHT_ARROW_16_IMG, screen, x, y)
+        PieceSprite.__init__(self, RIGHT_ARROW_IMG, screen, x, y)
 
 class LeftArrowSprite(PieceSprite):
     def __init__(self, screen, x, y):
-        PieceSprite.__init__(self, LEFT_ARROW_16_IMG, screen, x, y)
+        PieceSprite.__init__(self, LEFT_ARROW_IMG, screen, x, y)
 
 class DownArrowSprite(PieceSprite):
     def __init__(self, screen, x, y):
-        PieceSprite.__init__(self, DOWN_ARROW_16_IMG, screen, x, y)
+        PieceSprite.__init__(self, DOWN_ARROW_IMG, screen, x, y)
 
 class BoardSprite(PieceSprite):
     def __init__(self, screen):
-        PieceSprite.__init__(self, BOARD_16_IMG, screen, 0, 2)
+        PieceSprite.__init__(self, BOARD_IMG, screen, 0, 2)
 
 class WinScreenSprite(PieceSprite):
     def __init__(self, screen, player):
@@ -195,7 +205,7 @@ def main_loop():
                 elif event.key == K_DOWN:
                     if board[sel_col][0] == 0:
                         filled = -1
-                        row = SCREEN_Y / 16 - 1
+                        row = SCREEN_Y / TILE_SIZE - 1
                         while board[sel_col][filled] != 0:
                             row -= 1
                             filled -= 1
