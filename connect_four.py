@@ -7,30 +7,45 @@ main_dir = os.path.split(os.path.abspath(__file__))[0]
 data_dir = os.path.join(main_dir, 'data')
 
 # screen constants
-# SCREEN_X = 112
-# SCREEN_Y = 128
-# TILE_SIZE = 16
-SCREEN_X = 224
-SCREEN_Y = 256
-TILE_SIZE = 32
+SCREEN_X = 112
+SCREEN_Y = 128
+TILE_SIZE = 16
+
+# SCREEN_X = 224
+# SCREEN_Y = 256
+# TILE_SIZE = 32
+
+# SCREEN_X = 448
+# SCREEN_Y = 512
+# TILE_SIZE = 64
 
 # image constants
-# RED_PIECE_IMG = 'red_piece_16.gif'
-# YELLOW_PIECE_IMG = 'yellow_piece_16.gif'
-# RIGHT_ARROW_IMG = 'right_arrow_16.gif'
-# LEFT_ARROW_IMG = 'left_arrow_16.gif'
-# DOWN_ARROW_IMG = 'down_arrow_16.gif'
-# BOARD_IMG = 'board_16.gif'
-# WIN_RED_IMG = 'win_red_16.gif'
-# WIN_YELLOW_IMG = 'win_yellow_16.gif'
-RED_PIECE_IMG = 'red_piece_32.gif'
-YELLOW_PIECE_IMG = 'yellow_piece_32.gif'
-RIGHT_ARROW_IMG = 'right_arrow_32.gif'
-LEFT_ARROW_IMG = 'left_arrow_32.gif'
-DOWN_ARROW_IMG = 'down_arrow_32.gif'
-BOARD_IMG = 'board_32.gif'
-WIN_RED_IMG = 'win_red_32.gif'
-WIN_YELLOW_IMG = 'win_yellow_32.gif'
+RED_PIECE_IMG = 'red_piece_16.gif'
+YELLOW_PIECE_IMG = 'yellow_piece_16.gif'
+RIGHT_ARROW_IMG = 'right_arrow_16.gif'
+LEFT_ARROW_IMG = 'left_arrow_16.gif'
+DOWN_ARROW_IMG = 'down_arrow_16.gif'
+BOARD_IMG = 'board_16.gif'
+WIN_RED_IMG = 'win_red_16.gif'
+WIN_YELLOW_IMG = 'win_yellow_16.gif'
+
+# RED_PIECE_IMG = 'red_piece_32.gif'
+# YELLOW_PIECE_IMG = 'yellow_piece_32.gif'
+# RIGHT_ARROW_IMG = 'right_arrow_32.gif'
+# LEFT_ARROW_IMG = 'left_arrow_32.gif'
+# DOWN_ARROW_IMG = 'down_arrow_32.gif'
+# BOARD_IMG = 'board_32.gif'
+# WIN_RED_IMG = 'win_red_32.gif'
+# WIN_YELLOW_IMG = 'win_yellow_32.gif'
+
+# RED_PIECE_IMG = 'red_piece_64.gif'
+# YELLOW_PIECE_IMG = 'yellow_piece_64.gif'
+# RIGHT_ARROW_IMG = 'right_arrow_64.gif'
+# LEFT_ARROW_IMG = 'left_arrow_64.gif'
+# DOWN_ARROW_IMG = 'down_arrow_64.gif'
+# BOARD_IMG = 'board_64.gif'
+# WIN_RED_IMG = 'win_red_64.gif'
+# WIN_YELLOW_IMG = 'win_yellow_64.gif'
 
 BACKGROUND_COLOR = (120, 170, 240)
 
